@@ -44,7 +44,7 @@ class Album(models.Model):
         verbose_name_plural = "Albums"
 
 
-class Genre:
+class Genre(models.Model):
     title = models.CharField(max_length=30, verbose_name="genre_title")
     description = models.TextField(verbose_name="genre_description")
 
@@ -58,7 +58,7 @@ class Genre:
 
 class Song(models.Model):
     title = models.CharField(max_length=100, verbose_name = "song_title")
-    genre = models.ManyToManyField(Genre, max_length=200, verbose_name = "song_genre")
+    genre = models.ManyToManyField(Genre, related_name="song", verbose_name = "song_genre")
     lyrics = models.TextField(max_length=3000, verbose_name = "song_lyrics")
     album = models.ForeignKey(Album, on_delete = models.CASCADE)
     description = models.TextField(max_length=4000, verbose_name = "song_description", blank=True, null=True)
