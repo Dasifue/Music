@@ -1,1 +1,5 @@
 venv/
+
+src/db.sqlite3
+src/media/images/*
+src/media/music/*
