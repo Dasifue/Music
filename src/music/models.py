@@ -6,7 +6,7 @@ class Band(models.Model):
     image = models.ImageField(upload_to = 'images', verbose_name="band_image", blank = False)
     description = models.TextField(verbose_name="band_description")
 
-    def __repr__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -21,7 +21,7 @@ class BandMember(models.Model):
     biography = models.TextField(verbose_name="band_member_biography")
     instrument = models.CharField(max_length=30, verbose_name="band_member_instrument")
 
-    def __repr__(self):
+    def __str__(self):
         return self.name + " " + self.surname
 
     class Meta:
@@ -36,7 +36,7 @@ class Album(models.Model):
     release_date = models.DateField()
     num_stars = models.IntegerField()
 
-    def __repr__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -48,7 +48,7 @@ class Genre(models.Model):
     title = models.CharField(max_length=30, verbose_name="genre_title")
     description = models.TextField(verbose_name="genre_description")
 
-    def __repr__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -64,7 +64,7 @@ class Song(models.Model):
     description = models.TextField(max_length=4000, verbose_name = "song_description", blank=True, null=True)
     audio_file = models.FileField(upload_to="music", blank=False, null=False)
     
-    def __repr__(self):
+    def __str__(self):
         return self.title
 
     class Meta:

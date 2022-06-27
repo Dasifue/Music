@@ -1,0 +1,4 @@
+{% for band in bands_list %}
+<a href="{% url 'music:band_info' pk=band.id %}" class="btn btn-black text-white">{{band.title}}</a>
+<p></p>
+{% endfor %}
