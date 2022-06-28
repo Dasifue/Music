@@ -3,21 +3,99 @@ from .models import Band, BandMember, Album, Genre, Song
 from django.views import generic
 from django.http import HttpResponse
 
-# Create your views here.
-def hello_world(request):
-    return HttpResponse("hello world")
 
 class AllBandsListView(generic.ListView):
     model = Band
     template_name = "all_bands.html"
     context_object_name = "bands_list"
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['second_id'] = Band.objects.filter(id = 2)
-    #     return context
+
+def get_band_info(request, band_id):
+    band_data = Band.objects.get(id = band_id)
+    description = band_data.description
+    image = band_data.image
+    members = BandMember.objects.filter(band_id = band_id)
+    albums = Album.objects.filter(band_id = band_id)
+
+    context = {
+        "title": band_data,
+        "description": description,
+        "image": image,
+        "members_list": members,
+        "albums_list": albums
+    }
+
+    return render(request, 'band_info.html', context)
 
 
-class BandInfoView(generic.DetailView):
-    model = Band
-    template_name = "band_info.html"
+def get_album_info(request, album_id):
+    album_data = Album.objects.get(id = album_id)
+    description = album_data.description
+    image = album_data.image
+    release_date = album_data.release_date
+    num_stars = album_data.num_stars
+    songs = Song.objects.filter(album_id = album_id)
+
+    context = {
+        "title": album_data,
+        "description": description,
+        "image": image,
+        "release_date": release_date,
+        "num_stars": num_stars,
+        "songs_list": songs
+    }
+
+    return render(request, 'album_info.html', context)
+
+
+def get_band_member_info(request, member_id):
+    member_data = BandMember.objects.get(id = member_id)
+    biography = member_data.biography
+    instrument = member_data.instrument
+
+    context = {
+        "name": member_data,
+        "biography": biography,
+        "instrument": instrument
+    }
+
+    return render(request, 'band_member_info.html', context)
+
+
+def song_info(request, song_id):
+    song_data = Song.objects.get(id = song_id)
+    title = song_data.title
+    genre_list = song_data.genre.all()
+    lyrics = song_data.lyrics
+    album = song_data.album
+    album_image = album.image
+    description = song_data.description
+    audio_file = song_data.audio_file
+
+    context = {
+        "title": title,
+        "genre_list": genre_list,
+        "lyrics": lyrics,
+        "album": album,
+        "image": album_image,
+        "description": description,
+        "audio_file": audio_file
+    }
+
+    return render(request, 'song_info.html', context)
+
+
+def get_genre_info(request, genre_id):
+    genre_data = Genre.objects.get(id = genre_id)
+    title = genre_data.title
+    description = genre_data.description
+    songs = Song.objects.filter(genre = genre_id)
+    songs_list = songs[0:6]
+
+    context = {
+        "title": title,
+        "description": description,
+        "songs_list": songs_list
+    }
+
+    return render(request, 'genre_info.html', context)
