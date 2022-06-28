@@ -16,13 +16,14 @@ class Band(models.Model):
 
 
 class BandMember(models.Model):
+    band = models.ForeignKey(Band, on_delete=models.CASCADE)
     name = models.CharField(max_length=20, verbose_name="bad_member_name")
     surname = models.CharField(max_length=20, verbose_name="band_member_surname")
     biography = models.TextField(verbose_name="band_member_biography")
     instrument = models.CharField(max_length=30, verbose_name="band_member_instrument")
 
     def __str__(self):
-        return self.name + " " + self.surname
+        return f"{self.name} {self.surname}"
 
     class Meta:
         verbose_name = "Band member"
@@ -32,6 +33,7 @@ class BandMember(models.Model):
 class Album(models.Model):
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, verbose_name="album")
+    description = models.TextField(verbose_name="album_description", null=True, blank=True)
     image = models.ImageField(verbose_name="album_image", blank = False)
     release_date = models.DateField()
     num_stars = models.IntegerField()

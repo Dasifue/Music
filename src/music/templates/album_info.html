@@ -1,0 +1,11 @@
+<p>{{num_stars}}</p>
+<p>{{release_date}}</p>
+<img src="{{image.url}}">
+<h1>{{title}}</h1>
+<p>{{description}}</p>
+
+{% for song in songs_list %}
+
+<a href="{% url 'music:song_info' song_id=song.id %}" class="btn btn-black text-white">{{song.title}}</a>
+
+{% endfor %}
