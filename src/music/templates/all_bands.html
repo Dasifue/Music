@@ -1,5 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
 {% for band in bands_list %}
 <img src="{{band.image.url}}">
-<a href="{% url 'music:band_info' band_id=band.id %}" class="btn btn-black text-white">{{band.title}}</a>
+<a href="{% url 'music:band_info' band_id=band.id %}">{{band.title}}</a>
 <p></p>
 {% endfor %}
+
+{% endblock %}

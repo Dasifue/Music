@@ -1,18 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
 <img src="{{image.url}}">
 <h1>{{title}}</h1>
 <p>{{description}}</p>
 
 {% for member in members_list %}
 
-<a href="{% url 'music:member_info' member_id=member.id %}" class="btn btn-black text-white">{{member.name}} {{member.surname}}</a>
+<a href="{% url 'music:member_info' member_id=member.id %}">{{member.name}} {{member.surname}}</a>
 <p> - {{member.instrument}}</p>
 
 {% endfor %}
 
 {% for album in albums_list %}
 
-<img src="{{album.image.url}}" class="card-img-top" alt="...">
-<a href="{% url 'music:album_info' album_id=album.id %}" class="btn btn-black text-white">{{album.title}}</a>
+<img src="{{album.image.url}}">
+<a href="{% url 'music:album_info' album_id=album.id %}" >{{album.title}}</a>
 <p>{{album.num_stars}}</p>
 
 {% endfor %}
+
+{% endblock %}

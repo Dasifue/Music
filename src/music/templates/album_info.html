@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
 <p>{{num_stars}}</p>
 <p>{{release_date}}</p>
 <img src="{{image.url}}">
@@ -6,6 +10,8 @@
 
 {% for song in songs_list %}
 
-<a href="{% url 'music:song_info' song_id=song.id %}" class="btn btn-black text-white">{{song.title}}</a>
+<a href="{% url 'music:song_info' song_id=song.id %}">{{song.title}}</a>
 
 {% endfor %}
+
+{% endblock %}

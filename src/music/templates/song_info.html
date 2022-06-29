@@ -1,11 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
 <img src="{{image.url}}">
 <h1>{{title}}</h1>
 <h2>{{album}}</h2>
 {% for genre in genre_list %}
-<a href="{% url 'music:genre_info' genre_id=genre.id %}" class="btn btn-black text-white">{{genre.title}}</a>
+<a href="{% url 'music:genre_info' genre_id=genre.id %}">{{genre.title}}</a>
 {% endfor %}
 <p>{{description}}</p>
 <audio controls>
     <source src="{{ audio_file.url }}" type="audio/mpeg">
 </audio>
 <p>{{lyrics}}</p>
+
+{% endblock %}
