@@ -1,7 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
 <h1>{{title}}</h1>
 <p>{{description}}</p>
 {% for song in songs_list %}
 
-<a href="{% url 'music:song_info' song_id=song.id %}" class="btn btn-black text-white">{{song.title}}</a>
+<a href="{% url 'music:song_info' song_id=song.id %}">{{song.title}}</a>
 
 {% endfor %}
+
+{% endblock %}
