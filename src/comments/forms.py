@@ -1,13 +1,13 @@
-from django.forms import forms
+from django import forms
 from .models import AlbumComment, SongComment
 
 class AlbumCommentForm(forms.ModelForm):
     class Meta:
         model = AlbumComment
-        field = ['email', 'content', 'time', 'album']
+        fields = ['email', 'content']
 
 
 class SongCommentForm(forms.ModelForm):
     class Meta:
         model = SongComment
-        fileds = ['email', 'content', 'time', 'song']
+        fields = ['email', 'content']

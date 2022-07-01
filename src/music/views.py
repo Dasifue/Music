@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import Band, BandMember, Album, Genre, Song
+from comments.forms import AlbumCommentForm, SongCommentForm
 from django.views import generic
 from django.http import HttpResponse
+# from comments.views import album_comment_create
 
 
 class AllBandsListView(generic.ListView):
@@ -29,12 +31,22 @@ def get_band_info(request, band_id):
 
 
 def get_album_info(request, album_id):
-    album_data = Album.objects.get(id = album_id)
+    album_data = get_object_or_404(Album, id = album_id)
     description = album_data.description
     image = album_data.image
     release_date = album_data.release_date
     num_stars = album_data.num_stars
     songs = Song.objects.filter(album_id = album_id)
+
+    if request.method == 'POST':
+        form = AlbumCommentForm(data=request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.album = album_data
+            new_comment.save()
+            return HttpResponse("Thanks for leaving a comment")
+    else:
+        form = AlbumCommentForm()
 
     context = {
         "title": album_data,
@@ -42,7 +54,8 @@ def get_album_info(request, album_id):
         "image": image,
         "release_date": release_date,
         "num_stars": num_stars,
-        "songs_list": songs
+        "songs_list": songs,
+        "comment_form": form,
     }
 
     return render(request, 'album_info.html', context)
@@ -72,6 +85,16 @@ def song_info(request, song_id):
     description = song_data.description
     audio_file = song_data.audio_file
 
+    if request.method == "POST":
+        form = SongCommentForm(data=request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.song = song_data
+            new_comment.save()
+            return HttpResponse('Thanks for leaving a comment!')
+    else:
+        form = SongCommentForm()
+
     context = {
         "title": title,
         "genre_list": genre_list,
@@ -79,7 +102,8 @@ def song_info(request, song_id):
         "album": album,
         "image": album_image,
         "description": description,
-        "audio_file": audio_file
+        "audio_file": audio_file,
+        "comment_form": form
     }
 
     return render(request, 'song_info.html', context)

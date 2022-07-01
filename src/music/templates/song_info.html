@@ -14,4 +14,11 @@
 </audio>
 <p>{{lyrics}}</p>
 
+
+
+<form method="post">          {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="sumbit" >Submit</button>
+</form>
+
 {% endblock %}
