@@ -25,10 +25,6 @@ class BandMember(models.Model):
     def __str__(self):
         return f"{self.name} {self.surname}"
 
-    @property
-    def full_name(self):
-        return '%s %s' % (self.name, self.surname)
-
     class Meta:
         verbose_name = "Band member"
         verbose_name_plural = "Band members"
@@ -69,6 +65,7 @@ class Song(models.Model):
     album = models.ForeignKey(Album, on_delete = models.CASCADE)
     description = models.TextField(max_length=4000, verbose_name = "song_description", blank=True, null=True)
     audio_file = models.FileField(upload_to="music", blank=False, null=False)
+    num_stars = models.IntegerField()
     
     def __str__(self):
         return self.title
