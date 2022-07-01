@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if bands_list %}
+
+<h2>Bands:</h2>
+{% for band in bands_list %}
+<a href="{% url 'music:band_info' band_id=band.id %}">{{band.title}}</a>
+{% endfor %}
+
+{% endif %}
+
+
+{% if albums_list %}
+
+<h2>Albums:</h2>
+{% for album in albums_list %}
+<a href="{% url 'music:album_info' album_id=album.id %}">{{album.title}}</a>
+{% endfor %}
+
+{% endif %}
+
+
+{% if songs_list %}
+<h2>Songs:</h2>
+{% for song in songs_list %}
+<a href="{% url 'music:song_info' song_id=song.id %}">{{song.title}}</a> 
+{% endfor %}
+
+{% endif %}
+
+
+{% if members_list %}
+<h2>Band members:</h2>
+{% for member in members_list %}
+<a href="{% url 'music:member_info' member_id=member.id %}">{{member.name}}</a>
+{% endfor %}
+
+{% endif %}
+
+{% endblock %}

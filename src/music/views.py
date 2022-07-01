@@ -99,3 +99,19 @@ def get_genre_info(request, genre_id):
     }
 
     return render(request, 'genre_info.html', context)
+
+def search_view(request):
+    query = request.GET.get('data')
+    bands = Band.objects.filter(title__icontains=query)
+    albums = Album.objects.filter(title__icontains=query)
+    songs = Song.objects.filter(title__icontains=query)
+    members = BandMember.objects.filter(name__iexact=query) or BandMember.objects.filter(surname__iexact=query)
+
+    context = {
+        "bands_list":bands,
+        "albums_list":albums,
+        "songs_list":songs,
+        "members_list":members
+    }
+    
+    return render(request, 'search_result.html', context)

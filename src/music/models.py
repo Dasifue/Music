@@ -25,6 +25,10 @@ class BandMember(models.Model):
     def __str__(self):
         return f"{self.name} {self.surname}"
 
+    @property
+    def full_name(self):
+        return '%s %s' % (self.name, self.surname)
+
     class Meta:
         verbose_name = "Band member"
         verbose_name_plural = "Band members"

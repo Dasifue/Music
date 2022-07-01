@@ -9,5 +9,6 @@ urlpatterns = [
     path('album_info/<int:album_id>', get_album_info, name = "album_info"),
     path('member_info/<int:member_id>', get_band_member_info, name = "member_info"),
     path('song_info/<int:song_id>', song_info, name = "song_info"),
-    path('genre_info/<int:genre_id>', get_genre_info, name = "genre_info")
+    path('genre_info/<int:genre_id>', get_genre_info, name = "genre_info"),
+    path('results/', search_view, name = "search_view")
 ]
