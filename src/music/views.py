@@ -6,11 +6,27 @@ from django.http import HttpResponse
 # from comments.views import album_comment_create
 
 
+def base_view():
+    bands = Band.objects.all()[:5]
+    genres = Genre.objects.all()[:5]
+
+    context = {
+        'bands_list':bands,
+        'genres_list':genres
+    }
+
+    return context
+
+
 class AllBandsListView(generic.ListView):
     model = Band
     template_name = "all_bands.html"
     context_object_name = "bands_list"
+    extra_context = {'base_data':base_view()}
 
+
+def home_view(request):
+    pass
 
 def get_band_info(request, band_id):
     band_data = Band.objects.get(id = band_id)
@@ -24,7 +40,8 @@ def get_band_info(request, band_id):
         "description": description,
         "image": image,
         "members_list": members,
-        "albums_list": albums
+        "albums_list": albums,
+        'base_data':base_view()
     }
 
     return render(request, 'band_info.html', context)
@@ -56,6 +73,7 @@ def get_album_info(request, album_id):
         "num_stars": num_stars,
         "songs_list": songs,
         "comment_form": form,
+        'base_data':base_view()
     }
 
     return render(request, 'album_info.html', context)
@@ -69,7 +87,8 @@ def get_band_member_info(request, member_id):
     context = {
         "name": member_data,
         "biography": biography,
-        "instrument": instrument
+        "instrument": instrument,
+        'base_data':base_view()
     }
 
     return render(request, 'band_member_info.html', context)
@@ -103,10 +122,18 @@ def song_info(request, song_id):
         "image": album_image,
         "description": description,
         "audio_file": audio_file,
-        "comment_form": form
+        "comment_form": form,
+        'base_data':base_view()
     }
 
     return render(request, 'song_info.html', context)
+
+
+class AllGenresListView(generic.ListView):
+    model = Genre
+    template_name = "all_genres.html"
+    context_object_name = "genres_list"
+    extra_context = {'base_data':base_view()}
 
 
 def get_genre_info(request, genre_id):
@@ -119,7 +146,8 @@ def get_genre_info(request, genre_id):
     context = {
         "title": title,
         "description": description,
-        "songs_list": songs_list
+        "songs_list": songs_list,
+        'base_data':base_view()
     }
 
     return render(request, 'genre_info.html', context)
@@ -135,7 +163,8 @@ def search_view(request):
         "bands_list":bands,
         "albums_list":albums,
         "songs_list":songs,
-        "members_list":members
+        "members_list":members,
+        'base_data':base_view()
     }
     
     return render(request, 'search_result.html', context)
