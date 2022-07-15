@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="{% url 'authe:register' %}" method="POST"> {% csrf_token %}
+    {{user_form.as_p}}
+    <button type="submit">Register</button>
+</form>
+
+
+<h3>Already have an account?
+    <a href="{% url 'authe:login' %}">Log in</a>
+</h3>
+
+{% endblock %}

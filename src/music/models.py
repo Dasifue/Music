@@ -36,7 +36,6 @@ class Album(models.Model):
     description = models.TextField(verbose_name="album_description", null=True, blank=True)
     image = models.ImageField(verbose_name="album_image", blank = False)
     release_date = models.DateField()
-    num_stars = models.IntegerField()
 
     def __str__(self):
         return self.title
@@ -65,7 +64,6 @@ class Song(models.Model):
     album = models.ForeignKey(Album, on_delete = models.CASCADE)
     description = models.TextField(max_length=4000, verbose_name = "song_description", blank=True, null=True)
     audio_file = models.FileField(upload_to="music", blank=False, null=False)
-    num_stars = models.IntegerField()
     
     def __str__(self):
         return self.title

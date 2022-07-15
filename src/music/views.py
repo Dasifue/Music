@@ -25,9 +25,6 @@ class AllBandsListView(generic.ListView):
     extra_context = {'base_data':base_view()}
 
 
-def home_view(request):
-    pass
-
 def get_band_info(request, band_id):
     band_data = Band.objects.get(id = band_id)
     description = band_data.description

@@ -5,7 +5,8 @@ from .views import *
 app_name = 'music'
 
 urlpatterns = [
-    path('', lambda request: render(request, 'site_info.html', context={'base_data':base_view()}), name = "site_info"),
+    path('', lambda request: render(request, 'home.html', context={'base_data':base_view()}), name='home'),
+    path('site_info', lambda request: render(request, 'site_info.html', context={'base_data':base_view()}), name = "site_info"),
     path('bands/', AllBandsListView.as_view(), name = "all_bands"),
     path('genres/', AllGenresListView.as_view(), name = "all_genres"),
     path('bands/band_info/<int:band_id>', get_band_info, name = "band_info"),

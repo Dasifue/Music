@@ -53,6 +53,19 @@
             <li class="nav-item">
               <a class="nav-link disabled" href="#">Disabled</a>
             </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'authe:register' %}">Register <span class="sr-only"></span></a>
+            </li>
+            {% if user.is_authenticated == False %}
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'authe:login' %}">Log in <span class="sr-only"></span></a>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated == True %}
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'authe:logout' %}">Log out <span class="sr-only"></span></a>
+            </li>
+            {% endif %}
           </ul>
           <form action="{% url 'music:search_view' %}" method="get">
             <input name="data" type="text" placeholder="Search...">

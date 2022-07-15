@@ -1,11 +1,17 @@
 from django.db import models
-from music.models import Album, Song 
+from music.models import Album, Song
+from authe.models import CustomUser
+from django.core.validators import MaxValueValidator, MinValueValidator 
 
 # Create your models here.
 class Comment(models.Model):
-    email = models.EmailField(max_length=100)
+    writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField(max_length=1000, null=False)
     time = models.DateField(auto_now=True, verbose_name="time")
+    rating = models.IntegerField(default=1, validators=[
+            MaxValueValidator(5),
+            MinValueValidator(1)
+        ])
 
     def __str__(self):
         return f"{self.email}: {self.content[:21]}"
