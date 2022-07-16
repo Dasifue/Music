@@ -3,7 +3,7 @@
 {% block content %}
 
 <img src="{{image.url}}">
-<h1>{{title}}</h1>
+<h1>{{title}} - {{rating}}</h1>
 <h2>{{album}}</h2>
 {% for genre in genre_list %}
 <a href="{% url 'music:genre_info' genre_id=genre.id %}">{{genre.title}}</a>
