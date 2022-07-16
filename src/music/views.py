@@ -2,6 +2,7 @@ from xml.etree.ElementTree import Comment
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 
+from django.db.models import Avg
 from comments.forms import AlbumCommentForm, SongCommentForm
 from .models import Band, BandMember, Album, Genre, Song
 from comments.models import AlbumComment, SongComment
@@ -59,11 +60,17 @@ def get_album_info(request, album_id):
     comments = AlbumComment.objects.filter(album_id = album_id)
     form = album_comment_create(request, album_id)
 
+    rating_list = []
+    for comment in comments:
+        rating_list.append(comment.rating)
+    rating = round(sum(rating_list) / len(rating_list), 1)
+
     context = {
         "title": album_data,
         "description": description,
         "image": image,
         "release_date": release_date,
+        "rating":rating,
         "songs_list": songs,
         "comments_list": comments,
         "comment_form": form,
@@ -100,6 +107,11 @@ def get_song_info(request, song_id):
     comments = SongComment.objects.filter(song_id = song_id)
     form = song_comment_create(request, song_id)
 
+    rating_list = []
+    for comment in comments:
+        rating_list.append(comment.rating)
+    rating = round(sum(rating_list) / len(rating_list), 1)
+
     context = {
         "title": title,
         "genre_list": genre_list,
@@ -107,6 +119,7 @@ def get_song_info(request, song_id):
         "album": album,
         "image": album_image,
         "description": description,
+        "rating":rating,
         "audio_file": audio_file,
         "comments_list":comments,
         "comment_form": form,
