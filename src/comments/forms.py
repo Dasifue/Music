@@ -5,11 +5,11 @@ class AlbumCommentForm(forms.ModelForm):
 
     class Meta:
         model = AlbumComment
-        fields = ['writer', 'content']
+        fields = ['rating', 'content']
 
 
 class SongCommentForm(forms.ModelForm):
     
     class Meta:
         model = SongComment
-        fields = ['writer', 'content']
+        fields = ['rating', 'content']

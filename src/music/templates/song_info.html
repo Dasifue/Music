@@ -15,10 +15,21 @@
 <p>{{lyrics}}</p>
 
 
-
+{% if user.is_authenticated == True %}
 <form method="post">          {% csrf_token %}
-    {{ comment_form.as_p }}
+    {{ comment_form.form.as_p }}
     <button type="sumbit" >Submit</button>
 </form>
+{% elif user.is_authenticated == False %}
+<p>Want ot leave comment? <a href="{% url 'authe:login' %}">Log in</a></p>
+{% endif %}
+
+
+
+{% for comment in comments_list %}
+{{comment.writer}} - {{comment.rating}}: 
+{{comment.content}}
+<p></p>
+{% endfor %}
 
 {% endblock %}

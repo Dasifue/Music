@@ -4,7 +4,9 @@
 
 <form action="{% url 'authe:login' %}" method="POST"> {% csrf_token %}
     {{login_form.as_p}}
-    <button type="submit">Register</button>
+    <button type="submit">Log in</button>
 </form>
+
+<p>Don't have any account? <a href="{% url 'authe:register' %}">Rgister</a></p>
 
 {% endblock %}
