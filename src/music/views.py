@@ -1,9 +1,15 @@
+from xml.etree.ElementTree import Comment
 from django.shortcuts import get_object_or_404, render
-from .models import Band, BandMember, Album, Genre, Song
-from comments.forms import AlbumCommentForm, SongCommentForm
-from django.views import generic
 from django.http import HttpResponse
-# from comments.views import album_comment_create
+
+from comments.forms import AlbumCommentForm, SongCommentForm
+from .models import Band, BandMember, Album, Genre, Song
+from comments.models import AlbumComment, SongComment
+
+from django.views import generic
+from comments.views import album_comment_create, song_comment_create
+
+
 
 
 def base_view():
@@ -49,28 +55,19 @@ def get_album_info(request, album_id):
     description = album_data.description
     image = album_data.image
     release_date = album_data.release_date
-    num_stars = album_data.num_stars
     songs = Song.objects.filter(album_id = album_id)
-
-    if request.method == 'POST':
-        form = AlbumCommentForm(data=request.POST)
-        if form.is_valid():
-            new_comment = form.save(commit=False)
-            new_comment.album = album_data
-            new_comment.save()
-            return HttpResponse("Thanks for leaving a comment")
-    else:
-        form = AlbumCommentForm()
+    comments = AlbumComment.objects.filter(album_id = album_id)
+    form = album_comment_create(request, album_id)
 
     context = {
         "title": album_data,
         "description": description,
         "image": image,
         "release_date": release_date,
-        "num_stars": num_stars,
         "songs_list": songs,
+        "comments_list": comments,
         "comment_form": form,
-        'base_data':base_view()
+        "base_data":base_view(),
     }
 
     return render(request, 'album_info.html', context)
@@ -91,7 +88,7 @@ def get_band_member_info(request, member_id):
     return render(request, 'band_member_info.html', context)
 
 
-def song_info(request, song_id):
+def get_song_info(request, song_id):
     song_data = Song.objects.get(id = song_id)
     title = song_data.title
     genre_list = song_data.genre.all()
@@ -100,16 +97,8 @@ def song_info(request, song_id):
     album_image = album.image
     description = song_data.description
     audio_file = song_data.audio_file
-
-    if request.method == "POST":
-        form = SongCommentForm(data=request.POST)
-        if form.is_valid():
-            new_comment = form.save(commit=False)
-            new_comment.song = song_data
-            new_comment.save()
-            return HttpResponse('Thanks for leaving a comment!')
-    else:
-        form = SongCommentForm()
+    comments = SongComment.objects.filter(song_id = song_id)
+    form = song_comment_create(request, song_id)
 
     context = {
         "title": title,
@@ -119,8 +108,9 @@ def song_info(request, song_id):
         "image": album_image,
         "description": description,
         "audio_file": audio_file,
+        "comments_list":comments,
         "comment_form": form,
-        'base_data':base_view()
+        "base_data":base_view()
     }
 
     return render(request, 'song_info.html', context)
