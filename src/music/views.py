@@ -57,7 +57,7 @@ def get_album_info(request, album_id):
     image = album_data.image
     release_date = album_data.release_date
     songs = Song.objects.filter(album_id = album_id)
-    comments = AlbumComment.objects.filter(album_id = album_id)
+    comments = AlbumComment.objects.filter(album_id = album_id)[:6]
     form = album_comment_create(request, album_id)
 
     rating_list = []
@@ -91,7 +91,7 @@ def get_band_member_info(request, member_id):
         "name": member_data,
         "biography": biography,
         "instrument": instrument,
-        'base_data':base_view()
+        "base_data":base_view()
     }
 
     return render(request, 'band_member_info.html', context)
@@ -99,14 +99,13 @@ def get_band_member_info(request, member_id):
 
 def get_song_info(request, song_id):
     song_data = Song.objects.get(id = song_id)
-    title = song_data.title
     genre_list = song_data.genre.all()
     lyrics = song_data.lyrics
     album = song_data.album
     album_image = album.image
     description = song_data.description
     audio_file = song_data.audio_file
-    comments = SongComment.objects.filter(song_id = song_id)
+    comments = SongComment.objects.filter(song_id = song_id)[:6]
     form = song_comment_create(request, song_id)
 
     rating_list = []
@@ -118,7 +117,7 @@ def get_song_info(request, song_id):
         rating = 1
 
     context = {
-        "title": title,
+        "title": song_data,
         "genre_list": genre_list,
         "lyrics": lyrics,
         "album": album,

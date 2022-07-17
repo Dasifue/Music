@@ -32,4 +32,6 @@
 <p></p>
 {% endfor %}
 
+<a href="{% url 'comments:song_comments' song_id=title.id %}">view all comments</a>
+
 {% endblock %}
