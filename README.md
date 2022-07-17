@@ -1,1 +1,1 @@
-New updated version of Rock.msc. I dont use my old project becouse I want to make it from zero. Plus this verion will be more beter, complicated and clear.
+"Music" is my testing project. I tried to make it good and simple. Wait for updates.
