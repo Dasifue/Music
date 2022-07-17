@@ -3,3 +3,12 @@ venv/
 src/db.sqlite3
 src/media/images/*
 src/media/music/*
+src/media
+
+src/music/__pycache__/*
+src/main/__pycache__/*
+src/comments/__pycache__/*
+src/authe/__pycache__/*
+src/bot/__pycache__/*
+
+src/bot/bot_settings.py

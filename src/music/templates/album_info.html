@@ -30,4 +30,6 @@
 <p></p>
 {% endfor %}
 
+<a href="{% url 'comments:album_comments' album_id=title.id %}">view all comments</a>
+
 {% endblock %}

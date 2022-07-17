@@ -1,8 +1,13 @@
 from django.shortcuts import get_object_or_404, render
-from .models import AlbumComment, SongComment
-from music.models import Band, BandMember, Album, Genre, Song
-from comments.forms import AlbumCommentForm, SongCommentForm
 from django.http import HttpResponse
+
+from comments.forms import AlbumCommentForm, SongCommentForm
+from music.models import Band, BandMember, Album, Genre, Song
+from .models import AlbumComment, SongComment
+
+from music import views
+
+from bot.bot import send_message
 
 
 def album_comment_create(request, album_id):
@@ -15,6 +20,7 @@ def album_comment_create(request, album_id):
             new_comment.album = album
             new_comment.writer = request.user
             new_comment.save()
+            send_message(author=request.user, text=request.POST.get('content'), rating=request.POST.get('rating') , object=album)
             form = AlbumCommentForm()
     else:
         form = AlbumCommentForm()
@@ -32,8 +38,32 @@ def song_comment_create(request, song_id):
             new_comment.song = song
             new_comment.writer = request.user
             new_comment.save()
+            send_message(author=request.user, text=request.POST.get('content'), rating=request.POST.get('rating') , object=song)
             form = SongCommentForm()
     else:
         form = SongCommentForm()
     
-    return {'form':form}
+    return {"form":form}
+
+
+def get_album_comments(request, album_id):
+    comments = AlbumComment.objects.filter(album = album_id)
+
+    context = {
+        "comments_list": comments,
+        "base_data": views.base_view()
+    }
+
+    return render(request, 'album_comments.html', context)
+
+
+
+def get_song_comments(request, song_id):
+    comments = SongComment.objects.filter(song = song_id)
+
+    context = {
+        "comments_list": comments,
+        "base_data": views.base_view()
+    }
+
+    return render(request, 'song_comments.html', context)
