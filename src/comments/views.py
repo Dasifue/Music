@@ -47,10 +47,14 @@ def song_comment_create(request, song_id):
 
 
 def get_album_comments(request, album_id):
-    comments = AlbumComment.objects.filter(album = album_id)
+    album = Album.objects.get(id = album_id)
+    comments = AlbumComment.objects.filter(album = album_id).order_by('-time')
+    rating = views.rating_view(comments)
 
     context = {
         "comments_list": comments,
+        "album": album,
+        "rating": rating,
         "base_data": views.base_view()
     }
 
@@ -59,10 +63,14 @@ def get_album_comments(request, album_id):
 
 
 def get_song_comments(request, song_id):
-    comments = SongComment.objects.filter(song = song_id)
+    song = Song.objects.get(id = song_id)
+    comments = SongComment.objects.filter(song = song_id).order_by('-time')
+    rating = views.rating_view(comments)
 
     context = {
         "comments_list": comments,
+        "song":song,
+        "rating": rating,
         "base_data": views.base_view()
     }
 

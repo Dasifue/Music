@@ -8,9 +8,7 @@ from .models import Band, BandMember, Album, Genre, Song
 from comments.models import AlbumComment, SongComment
 
 from django.views import generic
-from comments.views import album_comment_create, song_comment_create
-
-
+from comments.views import album_comment_create, song_comment_create, get_album_comments
 
 
 def base_view():
@@ -23,6 +21,19 @@ def base_view():
     }
 
     return context
+
+
+def rating_view(comments):
+    rating_list = []
+    try:
+        for comment in comments:
+            rating_list.append(comment.rating)
+        rating = round(sum(rating_list) / len(rating_list), 1)
+    except:
+        rating = 1
+    
+    return {'rating': rating}   
+
 
 
 class AllBandsListView(generic.ListView):
@@ -57,16 +68,13 @@ def get_album_info(request, album_id):
     image = album_data.image
     release_date = album_data.release_date
     songs = Song.objects.filter(album_id = album_id)
-    comments = AlbumComment.objects.filter(album_id = album_id)[:6]
     form = album_comment_create(request, album_id)
+    comments = AlbumComment.objects.filter(album_id = album_id).order_by('-time')
+    album_comments_data = get_album_comments(request, album_id)
+    comments_list = comments[:6]
+    rating = rating_view(comments)
 
-    rating_list = []
-    try:
-        for comment in comments:
-            rating_list.append(comment.rating)
-        rating = round(sum(rating_list) / len(rating_list), 1)
-    except:
-        rating = 1
+
     context = {
         "title": album_data,
         "description": description,
@@ -74,7 +82,8 @@ def get_album_info(request, album_id):
         "release_date": release_date,
         "rating":rating,
         "songs_list": songs,
-        "comments_list": comments,
+        "comments_list": comments_list,
+        "comments_data": album_comments_data,
         "comment_form": form,
         "base_data":base_view(),
     }
@@ -105,16 +114,10 @@ def get_song_info(request, song_id):
     album_image = album.image
     description = song_data.description
     audio_file = song_data.audio_file
-    comments = SongComment.objects.filter(song_id = song_id)[:6]
+    comments = SongComment.objects.filter(song_id = song_id).order_by('-time')
+    comments_list = comments[:2]
     form = song_comment_create(request, song_id)
-
-    rating_list = []
-    try:
-        for comment in comments:
-            rating_list.append(comment.rating)
-        rating = round(sum(rating_list) / len(rating_list), 1)
-    except:
-        rating = 1
+    rating = rating_view(comments)
 
     context = {
         "title": song_data,
@@ -125,7 +128,7 @@ def get_song_info(request, song_id):
         "description": description,
         "rating":rating,
         "audio_file": audio_file,
-        "comments_list":comments,
+        "comments_list":comments_list,
         "comment_form": form,
         "base_data":base_view()
     }

@@ -2,9 +2,16 @@
 
 {% block content %}
 
+<h1>{{album.title}} - {{rating.rating}}</h1>
+
 {% for comment in comments_list %}
-{{comment.writer}} - {{comment.rating}}: 
-{{comment.content}}
+    {% if comment.writer == request.user %}
+        <p style="color:blue">{{comment.writer}} - {{comment.rating}}:</p> 
+        <p style="color:blue">{{comment.content}}</p>
+    {% else %}
+        <p>{{comment.writer}} - {{comment.rating}}:</p> 
+        <p>{{comment.content}}</p>
+    {% endif %}
 <p></p>
 {% endfor %}
 
