@@ -61,10 +61,12 @@ def get_album_info(request, album_id):
     form = album_comment_create(request, album_id)
 
     rating_list = []
-    for comment in comments:
-        rating_list.append(comment.rating)
-    rating = round(sum(rating_list) / len(rating_list), 1)
-
+    try:
+        for comment in comments:
+            rating_list.append(comment.rating)
+        rating = round(sum(rating_list) / len(rating_list), 1)
+    except:
+        rating = 1
     context = {
         "title": album_data,
         "description": description,
@@ -108,9 +110,12 @@ def get_song_info(request, song_id):
     form = song_comment_create(request, song_id)
 
     rating_list = []
-    for comment in comments:
-        rating_list.append(comment.rating)
-    rating = round(sum(rating_list) / len(rating_list), 1)
+    try:
+        for comment in comments:
+            rating_list.append(comment.rating)
+        rating = round(sum(rating_list) / len(rating_list), 1)
+    except:
+        rating = 1
 
     context = {
         "title": title,
